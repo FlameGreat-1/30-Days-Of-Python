@@ -1,4 +1,3 @@
-
 # Day 2 Challenge: Control Structures and Basic Data Structures - Documentation
 
 ## Overview
