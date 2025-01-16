@@ -1,0 +1,317 @@
+Lecture: Object-Oriented Programming in Python
+
+Introduction to OOP
+
+Object-Oriented Programming (OOP) is a programming paradigm that organizes software design around data, or objects, rather than functions and logic. An object can be defined as a data field that has unique attributes and behavior.
+Key concepts in OOP:
+
+Objects: Instances of classes that contain data and code
+Classes: Blueprints for creating objects
+Attributes: Data stored inside an object or class
+Methods: Functions defined inside a class that describe the behaviors of an object
+
+Benefits of OOP:
+
+Modularity: Encapsulation allows objects to be self-contained, making troubleshooting and collaborative development easier.
+Reusability: Through inheritance, you can reuse code from existing classes.
+Flexibility and scalability: Polymorphism allows for the same interface to be used for different underlying forms.
+Security: Encapsulation and abstraction provide a level of security by hiding implementation details.
+
+OOP vs Procedural Programming:
+Procedural programming focuses on procedures or routines, while OOP focuses on objects that contain both data and methods. OOP provides better organization for complex programs and is more suitable for large, complex, and actively updated or maintained programs.
+
+Classes and Objects
+
+A class is a blueprint for creating objects. It defines a set of attributes and methods that characterize any object of the class.
+Example:
+
+class Car:
+    def __init__(self, make, model, year):
+        self.make = make
+        self.model = model
+        self.year = year
+        
+    def display_info(self):
+        return f"{self.year} {self.make} {self.model}"
+
+# Creating an object (instance) of the Car class
+my_car = Car("Toyota", "Corolla", 2022)
+print(my_car.display_info())  # Output: 2022 Toyota Corolla
+
+
+In this example:
+
+
+Car is a class
+
+make, model, and year are attributes
+
+display_info() is a method
+
+my_car is an object (instance) of the Car class
+
+Class attributes vs instance attributes:
+
+Class attributes are shared by all instances of a class
+Instance attributes are unique to each instance
+
+Example:
+
+class Car:
+    wheels = 4  # Class attribute
+    
+    def __init__(self, make, model):
+        self.make = make  # Instance attribute
+        self.model = model  # Instance attribute
+
+car1 = Car("Toyota", "Corolla")
+car2 = Car("Honda", "Civic")
+
+print(Car.wheels)  # Output: 4
+print(car1.wheels)  # Output: 4
+print(car2.wheels)  # Output: 4
+
+Car.wheels = 3
+print(car1.wheels)  # Output: 3
+print(car2.wheels)  # Output: 3
+
+
+The self parameter:
+self represents the instance of the class. By using the self keyword we can access the attributes and methods of the class in Python.
+
+Methods
+
+There are three types of methods in Python classes:
+a. Instance methods:
+These are the most common type of methods. They can access and modify object state.
+
+class Car:
+    def __init__(self, make, model):
+        self.make = make
+        self.model = model
+    
+    def display_info(self):  # Instance method
+        return f"{self.make} {self.model}"
+
+
+b. Class methods:
+These methods are bound to the class and not the instance of the class. They can modify class state that applies across all instances of the class.
+
+class Car:
+    total_cars = 0
+    
+    def __init__(self, make, model):
+        self.make = make
+        self.model = model
+        Car.total_cars += 1
+    
+    @classmethod
+    def get_total_cars(cls):  # Class method
+        return cls.total_cars
+
+
+c. Static methods:
+These methods don't have access to cls or self. They work like regular functions but belong to the class's namespace.
+
+class Car:
+    @staticmethod
+    def is_valid_year(year):  # Static method
+        return 1900 <= year <= 2023
+
+
+
+Constructors and Destructors
+
+Constructor (__init__):
+The constructor is called when an object is created. It's used to initialize the object's state.
+
+class Car:
+    def __init__(self, make, model):
+        self.make = make
+        self.model = model
+
+
+Destructor (__del__):
+The destructor is called when an object is about to be destroyed. It's used to perform cleanup operations.
+
+class Car:
+    def __init__(self, make, model):
+        self.make = make
+        self.model = model
+    
+    def __del__(self):
+        print(f"The {self.make} {self.model} is being destroyed")
+
+
+
+Encapsulation
+
+Encapsulation is the bundling of data with the methods that operate on that data. It restricts direct access to some of an object's components, which is a means of preventing accidental interference and misuse of the methods and data.
+In Python, we use single underscore _ for protected attributes and double underscore __ for private attributes.
+
+class Car:
+    def __init__(self, make, model):
+        self._make = make  # Protected attribute
+        self.__model = model  # Private attribute
+    
+    def get_model(self):  # Getter method
+        return self.__model
+    
+    def set_model(self, model):  # Setter method
+        self.__model = model
+    
+    @property
+    def make(self):  # Property decorator for getter
+        return self._make
+    
+    @make.setter
+    def make(self, make):  # Property decorator for setter
+        self._make = make
+
+
+
+Inheritance
+
+Inheritance allows us to define a class that inherits all the methods and properties from another class.
+
+class Vehicle:
+    def __init__(self, make, model):
+        self.make = make
+        self.model = model
+    
+    def display_info(self):
+        return f"{self.make} {self.model}"
+
+class Car(Vehicle):
+    def __init__(self, make, model, year):
+        super().__init__(make, model)
+        self.year = year
+    
+    def display_info(self):
+        return f"{self.year} {super().display_info()}"
+
+my_car = Car("Toyota", "Corolla", 2022)
+print(my_car.display_info())  # Output: 2022 Toyota Corolla
+
+
+
+Polymorphism
+
+Polymorphism allows us to define methods in the child class with the same name as defined in their parent class.
+
+class Animal:
+    def speak(self):
+        pass
+
+class Dog(Animal):
+    def speak(self):
+        return "Woof!"
+
+class Cat(Animal):
+    def speak(self):
+        return "Meow!"
+
+def animal_sound(animal):
+    return animal.speak()
+
+dog = Dog()
+cat = Cat()
+
+print(animal_sound(dog))  # Output: Woof!
+print(animal_sound(cat))  # Output: Meow!
+
+
+
+Abstract Base Classes and Interfaces
+
+Abstract base classes are classes that are meant to be inherited from, but not instantiated. They often define a common interface for their subclasses.
+
+from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+    
+    @abstractmethod
+    def perimeter(self):
+        pass
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    
+    def area(self):
+        return self.width * self.height
+    
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+# shape = Shape()  # This would raise an error
+rect = Rectangle(5, 3)
+print(rect.area())  # Output: 15
+print(rect.perimeter())  # Output: 16
+
+
+
+Advanced OOP Concepts
+
+a. Composition vs Inheritance:
+Composition is a "has-a" relationship, while inheritance is an "is-a" relationship.
+
+class Engine:
+    def start(self):
+        return "Engine started"
+
+class Car:
+    def __init__(self):
+        self.engine = Engine()  # Composition
+    
+    def start(self):
+        return self.engine.start()
+
+my_car = Car()
+print(my_car.start())  # Output: Engine started
+
+
+b. Method Resolution Order (MRO):
+MRO is the order in which Python looks for a method in a hierarchy of classes.
+
+class A:
+    def method(self):
+        return "A"
+
+class B(A):
+    def method(self):
+        return "B"
+
+class C(A):
+    def method(self):
+        return "C"
+
+class D(B, C):
+    pass
+
+d = D()
+print(d.method())  # Output: B
+print(D.mro())  # Shows the method resolution order
+
+
+c. Mixins:
+Mixins are a sort of class that is used to "mix in" extra properties and methods into a class.
+
+class Serializable:
+    def serialize(self):
+        return json.dumps(self.__dict__)
+
+class Person(Serializable):
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+person = Person("Alice", 30)
+print(person.serialize())  # Output: {"name": "Alice", "age": 30}
+
+
+
